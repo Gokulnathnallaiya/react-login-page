@@ -1,10 +1,10 @@
 import React from 'react';
 
 import SignIn from '../components/sign-in/sign-in.component';
-import './sign-in-and-sign-up.styles.scss';
+import './sign-in-page.styles.scss';
 
 import {UserProvider} from '../userContext'
-const SignInAndSignUpPage = () => (
+const SignInPage = () => (
   <UserProvider>
   <div className='sign-in-and-sign-up'>
     <SignIn />
@@ -12,4 +12,4 @@ const SignInAndSignUpPage = () => (
   </UserProvider>
 );
 
-export default SignInAndSignUpPage;
+export default SignInPage;

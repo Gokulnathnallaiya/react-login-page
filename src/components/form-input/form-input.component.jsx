@@ -5,7 +5,7 @@ import {UserContext} from '../../userContext'
 
 const FormInput = ({ handleChange, label, ...otherProps }) => {
   const {userstate}= useContext(UserContext);
-  const [user,setUser] = userstate
+  const user = userstate
 
   return (
   <div className='group'>
@@ -13,7 +13,7 @@ const FormInput = ({ handleChange, label, ...otherProps }) => {
     {label ? (
       <label
         className={`${
-          user.email? 'shrink' : ''
+          otherProps.value.length? 'shrink' : ''
         } form-input-label`}
       >
         {label}
