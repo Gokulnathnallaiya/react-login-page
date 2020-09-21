@@ -2,15 +2,30 @@ import React, { useContext } from "react";
 
 import FormInput from "../form-input/form-input.component";
 import CustomButton from "../custom-button/custom-button.component";
-
 import "./sign-in.styles.scss";
 import { UserContext } from "../../userContext";
-
-const SignIn = () => {
+import { useHistory } from "react-router-dom";
+import axios from "axios";
+const SignIn = (props) => {
   const { userstate } = useContext(UserContext);
   const [user, setUser] = userstate;
+  let history = useHistory();
   const handleSubmit = (event) => {
-    console.log(user);
+    event.preventDefault();
+    axios
+      .post("https://express-sql-app.herokuapp.com/register", {
+        email: user.email,
+        password: user.password,
+        role: "student",
+      })
+      .then(function (response) {
+        user.loggedIn = true;
+        history.push({ pathname: "/user", state: { user: user } });
+        console.log(user);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
 
   const handleChange = (event) => {
@@ -20,7 +35,6 @@ const SignIn = () => {
       [name]: value,
     }));
   };
-  
 
   return (
     <div className="sign-in">
