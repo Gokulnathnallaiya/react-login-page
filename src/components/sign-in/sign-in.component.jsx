@@ -13,18 +13,28 @@ const SignIn = (props) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     axios
-      .post("https://express-sql-app.herokuapp.com/register", {
+      .post("https://express-sql-app.herokuapp.com/login", {
         email: user.email,
         password: user.password,
         role: "student",
       })
       .then(function (response) {
-        user.loggedIn = true;
-        history.push({ pathname: "/user", state: { user: user } });
-        console.log(user);
+        if (response.data.success === 1){
+          user.loggedIn = true;
+          history.push({ pathname: "/user", state: { user: user } });
+          console.log(user);
+          console.log(response)
+
+        }
+        else{
+          alert("Invalid Login Credentials")
+        }
+       
       })
       .catch(function (error) {
-        console.log(error);
+
+        alert("Invalid Login Credentials")
+        
       });
   };
 
