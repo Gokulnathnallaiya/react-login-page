@@ -8,7 +8,7 @@ const Header = () => (
   <div className='header'>
     
     <div className='options'>
-      <Link className='option' to='/signin'>
+      <Link className='option' to='/'>
         Login
       </Link>
       <Link className='option' to='/signup'>

@@ -16,7 +16,7 @@ function App() {
       <Header/>
       <Switch>
         <Route path='/signup' component={SignUpPage}/>
-        <Route path='/signin' component={SignInPage} />
+        <Route path='/' component={SignInPage} />
       </Switch>
     </div>
   );
