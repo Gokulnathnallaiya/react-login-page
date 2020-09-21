@@ -2,7 +2,7 @@ import React,{useContext} from 'react';
 
 import FormInput from '../form-input/form-input.component';
 import CustomButton from '../custom-button/custom-button.component';
-
+import axios from 'axios';
 import './sign-up.styles.scss';
 import {UserContext} from '../../userContext'
 
