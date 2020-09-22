@@ -2,14 +2,17 @@ import React, { useContext } from 'react';
 import { useLocation } from "react-router-dom";
 import "./landing-page.styles.css";
 
-const LandingPage = (user)=>{
+const LandingPage = ()=>{
     
 
- const location = useLocation();
+
+ 
+ const user = JSON.parse(localStorage.getItem('userdetail'));
+ console.log(localStorage)
     return (
         <div className='content'>
             <h1> Welcome Back</h1>
-            <span className="span">{location.state.user.email}</span>
+            <span className="span">{user.email}</span>
 
         </div>
     )

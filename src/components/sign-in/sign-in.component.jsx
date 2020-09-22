@@ -19,11 +19,12 @@ const SignIn = (props) => {
         role: "student",
       })
       .then(function (response) {
-        if (response.data.success === 1){
+        if (response.data.Token){
+          localStorage.setItem("user", JSON.stringify(response.data));
+          localStorage.setItem("userdetail", JSON.stringify(user));
           user.loggedIn = true;
           history.push({ pathname: "/user", state: { user: user } });
-          console.log(user);
-          console.log(response)
+          
 
         }
         else{
