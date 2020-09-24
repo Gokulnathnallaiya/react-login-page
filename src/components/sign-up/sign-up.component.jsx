@@ -91,7 +91,7 @@ class SignIn extends React.Component {
               required
             />
             <div className="buttonandloader">
-              <CustomButton type="submit"> Sign in </CustomButton>
+              <CustomButton type="submit"> Sign Up </CustomButton>
               {loading ? (
                 <div class="container">
                   <div class="loader"></div>
