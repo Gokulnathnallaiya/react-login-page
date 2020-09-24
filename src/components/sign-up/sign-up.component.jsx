@@ -23,7 +23,7 @@ class SignIn extends React.Component {
   handleSubmit = (event) => {
     event.preventDefault();
     this.setState({ loading: true });
-    if (Fthis.state.password !== this.state.confirmpassword) {
+    if (this.state.password !== this.state.confirmpassword) {
       this.setState({ loading: false });
       alert("passwords mismatch");
       return;
