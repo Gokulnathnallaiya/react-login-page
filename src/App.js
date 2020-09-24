@@ -1,6 +1,6 @@
-import React,{useContext}from 'react';
-import { Switch, Route, Redirect } from 'react-router-dom';
-import {UserContext} from './userContext';
+import React from 'react';
+import { Switch, Route } from 'react-router-dom';
+
 
 
 import './App.css';
@@ -11,18 +11,10 @@ import LandingPage from './pages/landing-page.component';
 
 
 function App() {
-  const { userstate } = useContext(UserContext);
-  const [user, setUser] = userstate;
-  if (user.loggedIn){
-    return (
-      <Redirect to="/user"/>
-    )
-  }
   return (
     
     <div>
       <Header/>
-      
       <Switch>
         <Route  path='/signup' component={SignUpPage}/>
         <Route exact path='/' component={SignInPage} />

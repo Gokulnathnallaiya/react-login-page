@@ -1,73 +1,110 @@
-import React, { useContext } from "react";
-
+import React from "react";
 import FormInput from "../form-input/form-input.component";
 import CustomButton from "../custom-button/custom-button.component";
 import "./sign-up.styles.scss";
-import { UserContext } from "../../userContext";
-
 import axios from "axios";
-const SignUp = (props) => {
-  const { userstate } = useContext(UserContext);
-  const [user, setUser] = userstate;
-  
-  const handleSubmit = (event) => {
+import { withRouter } from "react-router-dom";
+
+class SignIn extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      user: "",
+      email: "",
+      password: "",
+      confirmpassword: "",
+      loading: false,
+    };
+  }
+  componentDidMount() {
+    console.log(this.state);
+  }
+
+  handleSubmit = (event) => {
     event.preventDefault();
+    this.setState({ loading: true });
+    if (Fthis.state.password !== this.state.confirmpassword) {
+      this.setState({ loading: false });
+      alert("passwords mismatch");
+      return;
+    }
+    console.log(this.state);
     axios
       .post("https://express-sql-app.herokuapp.com/register", {
-        email: user.email,
-        password: user.password,
+        email: this.state.email,
+        password: this.state.password,
         role: "student",
       })
-      .then(function (response) {
-        if (response.data.success === 1){
-          alert("Registerd successfully, Please Login")
-
+      .then((response) => {
+        console.log(response);
+        if (response.data.success === 1) {
+          this.setState({ loading: false });
+          alert("Registered succesfully, Please Login");
+        } else {
+          this.setState({ loading: false });
+          alert("Invalid Login Credentials");
         }
-        else{
-          alert("Some error occured")
-        }
-       
       })
-      .catch(function (error) {
+      .catch((err) => {
+        console.log(err);
+        this.setState({ loading: false });
 
-        alert("Some error occured")
-        
+        alert("Invalid Login Credentials");
       });
   };
 
-  const handleChange = (event) => {
+  handleChange = (event) => {
     const { name, value } = event.target;
-    setUser((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
+    this.setState({ [name]: value });
   };
+  render() {
+    const { email, password, loading, confirmpassword } = this.state;
+    const { handleChange, handleSubmit } = this;
+    return (
+      <div>
+        <div className="sign-in">
+          <h4>Register</h4>
 
-  return (
-    <div className="sign-in">
-      <h4>REGISTER</h4>
+          <form onSubmit={handleSubmit}>
+            <FormInput
+              name="email"
+              type="email"
+              onChange={handleChange}
+              value={email}
+              label="email"
+              required
+            />
+            <FormInput
+              name="password"
+              type="password"
+              value={password}
+              onChange={handleChange}
+              label="password"
+              required
+            />
+            <FormInput
+              name="confirmpassword"
+              type="confirmpassword"
+              value={confirmpassword}
+              onChange={handleChange}
+              label="confirm password"
+              required
+            />
+            <div className="buttonandloader">
+              <CustomButton type="submit"> Sign in </CustomButton>
+              {loading ? (
+                <div class="container">
+                  <div class="loader"></div>
+                </div>
+              ) : null}
+            </div>
+          </form>
+        </div>
+      </div>
+    );
+  }
+}
 
-      <form onSubmit={handleSubmit}>
-        <FormInput
-          name="email"
-          type="email"
-          handleChange={handleChange}
-          value={user.email || ""}
-          label="email"
-          required
-        />
-        <FormInput
-          name="password"
-          type="password"
-          value={user.password || ""}
-          handleChange={handleChange}
-          label="password"
-          required
-        />
-        <CustomButton type="submit"> Sign Up </CustomButton>
-      </form>
-    </div>
-  );
-};
 
-export default SignUp;
+
+export default (withRouter(SignIn));

@@ -4,15 +4,21 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { BrowserRouter } from 'react-router-dom';
-import {UserProvider} from './userContext';
 
+import {Provider} from 'react-redux';
+import {store,persisitor} from './redux/store';
+import {PersistGate} from 'redux-persist/integration/react'
 ReactDOM.render(
-  <UserProvider>
+  <Provider store={store} >
+  
   <BrowserRouter>
+  <PersistGate persistor={persisitor}>
     <App />
+    </PersistGate>
   </BrowserRouter>
   
-  </UserProvider>,
+  
+  </Provider>,
   document.getElementById('root')
 );
 

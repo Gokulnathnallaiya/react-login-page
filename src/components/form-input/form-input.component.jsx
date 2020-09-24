@@ -1,19 +1,16 @@
-import React,{useContext} from 'react';
+import React  from 'react';
 
 import './form-input.styles.scss';
-import {UserContext} from '../../userContext'
 
-const FormInput = ({ handleChange, label, ...otherProps }) => {
-  const {userstate}= useContext(UserContext);
-  const user = userstate
-
+const FormInput = ({ onChange, label, ...otherProps }) => {
+  
   return (
   <div className='group'>
-    <input className='form-input' onChange={handleChange} {...otherProps} />
+    <input  className='form-input' onChange={onChange} {...otherProps} />
     {label ? (
       <label
         className={`${
-          otherProps.value.length? 'shrink' : ''
+          otherProps.value? 'shrink' : ''
         } form-input-label`}
       >
         {label}
@@ -21,5 +18,6 @@ const FormInput = ({ handleChange, label, ...otherProps }) => {
     ) : null}
   </div>)
 };
+
 
 export default FormInput;

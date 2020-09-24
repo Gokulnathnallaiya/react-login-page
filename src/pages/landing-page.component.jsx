@@ -1,21 +1,15 @@
-import React, { useContext } from 'react';
-import { useLocation } from "react-router-dom";
+import React from "react";
 import "./landing-page.styles.css";
-
-const LandingPage = ()=>{
-    
-
-
- 
- const user = JSON.parse(localStorage.getItem('userdetail'));
- console.log(localStorage)
-    return (
-        <div className='content'>
-            <h1> Welcome Back</h1>
-            <span className="span">{user.email}</span>
-
-        </div>
-    )
-}
-
-export default LandingPage;
+import { connect } from "react-redux";
+const LandingPage = ({ currentUser }) => {
+  return (
+    <div className="content">
+      <h1> Welcome Back</h1>
+      <span className="span">{currentUser}</span>
+    </div>
+  ) 
+};
+const mapStateToProps = (state) => ({
+  currentUser: state.user.currentUser,
+});
+export default connect(mapStateToProps)(LandingPage);

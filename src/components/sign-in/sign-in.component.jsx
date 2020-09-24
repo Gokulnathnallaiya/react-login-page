@@ -1,77 +1,102 @@
-import React, { useContext } from "react";
-
+import React from "react";
 import FormInput from "../form-input/form-input.component";
 import CustomButton from "../custom-button/custom-button.component";
 import "./sign-in.styles.scss";
-import { UserContext } from "../../userContext";
-import { useHistory } from "react-router-dom";
 import axios from "axios";
-const SignIn = (props) => {
-  const { userstate } = useContext(UserContext);
-  const [user, setUser] = userstate;
-  let history = useHistory();
-  const handleSubmit = (event) => {
+import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import { setCurrentUser } from "../../redux/user/user.action";
+
+class SignIn extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      user: "",
+      email: "",
+      password: "",
+      loading: false,
+    };
+  }
+  componentDidMount() {
+    console.log(this.state);
+  }
+
+  handleSubmit = (event) => {
     event.preventDefault();
+    this.setState({ loading: true });
     axios
       .post("https://express-sql-app.herokuapp.com/login", {
-        email: user.email,
-        password: user.password,
+        email: this.state.email,
+        password: this.state.password,
         role: "student",
       })
-      .then(function (response) {
-        if (response.data.Token){
-          localStorage.setItem("user", JSON.stringify(response.data));
-          localStorage.setItem("userdetail", JSON.stringify(user));
-          user.loggedIn = true;
-          history.push({ pathname: "/user", state: { user: user } });
-          
-
+      .then((response) => {
+        if (response.data.Token) {
+          this.props.setCurrentUser(this.state.email);
+          this.setState({ loading: false });
+          this.props.history.push({
+            pathname: "/user",
+          });
         }
         else{
-          alert("Invalid Login Credentials")
+          this.setState({ loading: false });
+          alert('Invalid Login Credentials')
         }
-       
+      }).catch((err)=>{
+        console.log(err)
+        this.setState({ loading: false });
+        alert('Invalid Login Credentials')
+
       })
-      .catch(function (error) {
-
-        alert("Invalid Login Credentials")
-        
-      });
   };
 
-  const handleChange = (event) => {
+  handleChange = (event) => {
     const { name, value } = event.target;
-    setUser((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
+    this.setState({ [name]: value });
   };
+  render() {
+    const { email, password, loading } = this.state;
+    const { handleChange, handleSubmit } = this;
+    return (
+      <div>
+        <div className="sign-in">
+          <h4>LOGIN</h4>
 
-  return (
-    <div className="sign-in">
-      <h4>LOGIN</h4>
+          <form onSubmit={handleSubmit}>
+            <FormInput
+              name="email"
+              type="email"
+              onChange={handleChange}
+              value={email}
+              label="email"
+              required
+            />
+            <FormInput
+              name="password"
+              type="password"
+              value={password}
+              onChange={handleChange}
+              label="password"
+              
+              required
+            />
+            <div className="buttonandloader">
+              <CustomButton type="submit"> Sign in </CustomButton>
+              {loading ? (
+                <div className="container">
+                  <div className="loader"></div>
+                </div>
+              ) : null}
+            </div>
+          </form>
+        </div>
+      </div>
+    );
+  }
+}
 
-      <form onSubmit={handleSubmit}>
-        <FormInput
-          name="email"
-          type="email"
-          handleChange={handleChange}
-          value={user.email || ""}
-          label="email"
-          required
-        />
-        <FormInput
-          name="password"
-          type="password"
-          value={user.password || ""}
-          handleChange={handleChange}
-          label="password"
-          required
-        />
-        <CustomButton type="submit"> Sign in </CustomButton>
-      </form>
-    </div>
-  );
-};
+const mapDispatchToProps = (dispatch) => ({
+  setCurrentUser: (user) => dispatch(setCurrentUser(user)),
+});
 
-export default SignIn;
+export default connect(null, mapDispatchToProps)(withRouter(SignIn));

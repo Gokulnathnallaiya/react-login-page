@@ -5,9 +5,10 @@ export const UserProvider = (props) => {
   const [user, setUser] = useState({
       email:"",
       password:"",
-      loggedIn:false,
-      loading:false,
+      
+      
   });
+  const [isloggedIn, setloggedIn ] = useState(false);
 
-  return <UserContext.Provider value={{userstate:[user,setUser]}}>{props.children}</UserContext.Provider>;
+  return <UserContext.Provider value={{userstate:[user,setUser], loggedIn:[isloggedIn, setloggedIn] }}>{props.children}</UserContext.Provider>;
 };
