@@ -1,3 +1,4 @@
+
 import React from "react";
 import FormInput from "../form-input/form-input.component";
 import CustomButton from "../custom-button/custom-button.component";
@@ -7,7 +8,7 @@ import { withRouter,Link} from "react-router-dom";
 import { connect } from "react-redux";
 import { setCurrentUser,setRole } from "../../redux/user/user.action";
 
-class SignIn extends React.Component {
+class SignInMod extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -15,7 +16,7 @@ class SignIn extends React.Component {
       email: "",
       password: "",
       loading: false,
-      role:"user",
+      role:"moderator",
     };
   }
   
@@ -63,7 +64,7 @@ class SignIn extends React.Component {
     return (
       <div>
         <div className="sign-in">
-          <h4>Login as User</h4>
+          <h4>Login as Moderator</h4>
 
           <form onSubmit={handleSubmit}>
             <FormInput
@@ -93,14 +94,6 @@ class SignIn extends React.Component {
           </form>
           
         </div>
-        <div className="belowlinks">
-        <Link className="option" to="/moderatorlogin">
-            Moderator Login
-          </Link>
-          <Link className="option" to="/adminlogin">
-           Admin Login
-          </Link>
-        </div>
       </div>
     );
   }
@@ -111,4 +104,4 @@ const mapDispatchToProps = (dispatch) => ({
   setRole: (role)=> dispatch(setRole(role))
 });
 
-export default connect(null, mapDispatchToProps)(withRouter(SignIn));
+export default connect(null, mapDispatchToProps)(withRouter(SignInMod));

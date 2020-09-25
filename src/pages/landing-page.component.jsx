@@ -1,7 +1,10 @@
 import React from "react";
 import "./landing-page.styles.css";
 import { connect } from "react-redux";
+import Card from "../components/card/card.component";
 import axios from "axios";
+import { withRouter } from "react-router-dom";
+
 class LandingPage extends React.Component {
   constructor(props) {
     super(props);
@@ -11,52 +14,59 @@ class LandingPage extends React.Component {
     };
   }
 
+  movetoedit = () => {};
+
   componentDidMount() {
-    console.log("mounted");
     this.setState({ loading: true });
+
     axios
-      .post("https://express-sql-app.herokuapp.com/findbyemail", {
-        email: this.props.currentUser,
-      })
+      .get("https://express-sql-app.herokuapp.com/products/all")
       .then((res) => {
         console.log(res);
-        this.setState(
-          {
-            products: JSON.parse(res.data.products),
-          },
-          () => console.log(this.state)
-        );
+        this.setState({ products: res.data }, () => {
+          console.log(this.state);
+        });
         this.setState({ loading: false });
-      })
-      .catch((err) => {
-        console.log(err);
       });
   }
   render() {
     return (
       <div className="content">
         <span className="span">{this.props.currentUser}</span>
-        <h3>My products</h3>
+        <span className="span">Role: {this.props.role}</span>
+        <h3>products</h3>
         {this.state.loading ? (
-          <div className="container">
+          <div className="container-loader">
             <div className="loader"></div>
           </div>
-        ) : this.state.products.length === 0 ? (
-          <h1>No products </h1>
-        ) : (
-          <div className="card">
+        ) : null}
+        <div className="card-list">
           {this.state.products.map((item) => (
-            
-              <div className="card-items">{item}</div>
-            
+            <Card
+              name={item.name}
+              price={item.price}
+              stock={item.stock}
+              key={item._id}
+              handlechange={() => {
+                this.props.history.push({
+                  pathname: "/editproduct",
+                  state: {
+                    name: item.name,
+                    price: item.price,
+                    stock: item.stock,
+                    id:item._id,
+                  },
+                });
+              }}
+            />
           ))}
-          </div>
-        )}
+        </div>
       </div>
     );
   }
 }
 const mapStateToProps = (state) => ({
   currentUser: state.user.currentUser,
+  role: state.user.role,
 });
-export default connect(mapStateToProps)(LandingPage);
+export default connect(mapStateToProps)(withRouter(LandingPage));

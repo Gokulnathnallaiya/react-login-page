@@ -5,15 +5,15 @@ import axios from "axios";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
-import "./add-product.styles.scss";
+import "./edit-product.styles.scss";
 
-class AddProduct extends React.Component {
+class EditProduct extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: "",
-      price: "",
-      stock: "",
+      name: this.props.location.state.name,
+      price: this.props.location.state.price,
+      stock: this.props.location.state.stock,
       loading: false,
     };
   }
@@ -22,7 +22,7 @@ class AddProduct extends React.Component {
     console.log("entered");
     this.setState({ loading: true });
     axios
-      .post("https://express-sql-app.herokuapp.com/products/new", {
+      .patch(`https://express-sql-app.herokuapp.com/products/update/${this.props.location.state.id}`, {
         name: this.state.name,
         price: this.state.price,
         stock: this.state.stock,
@@ -30,13 +30,17 @@ class AddProduct extends React.Component {
       .then((res) => {
         console.log(JSON.stringify(res));
         this.setState({ loading: false });
-        alert("Product added succesfully");
+        alert("Product updated succesfully");
         this.props.history.push("/user");
       })
       .catch((err) => {
         console.log(err);
       });
   };
+
+  componentDidMount(){
+      console.log(this.props.location.state.id)
+  }
 
   handleChange = (event) => {
     const { name, value } = event.target;
@@ -45,7 +49,9 @@ class AddProduct extends React.Component {
 
   render() {
     return (
+        
       <div className="container">
+          <h1>Edit Product</h1>
         <form onSubmit={this.handlesubmit}>
           <FormInput
             name="name"
@@ -72,7 +78,7 @@ class AddProduct extends React.Component {
             required
           />
           <div className="buttonandloader">
-              <CustomButton type="submit"> Add product </CustomButton>
+              <CustomButton type="submit"> Save </CustomButton>
               {this.state.loading ? (
                 <div className="container">
                   <div className="loader"></div>
@@ -86,7 +92,6 @@ class AddProduct extends React.Component {
 }
 const mapStateToProps = (state) => ({
   currentUser: state.user.currentUser,
-  role: state.user.role,
 });
 
-export default connect(mapStateToProps)(withRouter(AddProduct));
+export default connect(mapStateToProps)(withRouter(EditProduct));

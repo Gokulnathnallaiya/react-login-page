@@ -30,26 +30,21 @@ class SignIn extends React.Component {
     }
     console.log(this.state);
     axios
-      .post("https://express-sql-app.herokuapp.com/register", {
+      .post("https://express-sql-app.herokuapp.com/user/register", {
         email: this.state.email,
         password: this.state.password,
-        role: "student",
+        role: "user",
       })
       .then((response) => {
         console.log(response);
-        if (response.data.success === 1) {
+        if (response) {
           this.setState({ loading: false });
-          alert("Registered succesfully, Please Login");
-        } else {
-          this.setState({ loading: false });
-          alert("Invalid Login Credentials");
-        }
+          alert(response.data.message);
+        } 
       })
       .catch((err) => {
-        console.log(err);
         this.setState({ loading: false });
-
-        alert("Invalid Login Credentials");
+        alert("An error occured,please try again");
       });
   };
 
@@ -63,7 +58,7 @@ class SignIn extends React.Component {
     return (
       <div>
         <div className="sign-in">
-          <h4>Register</h4>
+          <h4>Register as User</h4>
 
           <form onSubmit={handleSubmit}>
             <FormInput
@@ -84,14 +79,14 @@ class SignIn extends React.Component {
             />
             <FormInput
               name="confirmpassword"
-              type="confirmpassword"
+              type="password"
               value={confirmpassword}
               onChange={handleChange}
               label="confirm password"
               required
             />
             <div className="buttonandloader">
-              <CustomButton type="submit"> Sign Up </CustomButton>
+              <CustomButton type="submit"> Sign Up  </CustomButton>
               {loading ? (
                 <div class="container">
                   <div class="loader"></div>
@@ -105,6 +100,4 @@ class SignIn extends React.Component {
   }
 }
 
-
-
-export default (withRouter(SignIn));
+export default withRouter(SignIn);

@@ -1,0 +1,44 @@
+.card-container{
+    display: flex;
+    flex-direction: column;
+    border:2px solid grey;
+    border-radius: 5px;
+   
+    background-color: rgba(35, 211, 129, 0.562);
+    padding:10px;
+    backface-visibility: visible;
+    transform:translateZ(0); 
+    margin-top:10px;
+    
+    
+    transition: transform 0.25s ease-out;
+
+}
+
+.productname{
+    color:black;
+}
+.custom-button {
+    min-width: 50px;
+    width: auto;
+    height: 50px;
+    letter-spacing: 0.5px;
+    line-height: 20px;
+    padding: 0 35px 0 35px;
+    font-size: 15px;
+    background-color: black;
+    color: white;
+    text-transform: uppercase;
+    font-family: 'Open Sans Condensed';
+    font-weight: bolder;
+    border: none;
+    cursor: pointer;
+  
+    
+  }
+  .custom-button:hover {
+    background-color: white;
+    color: black;
+    border: 1px solid black;
+  }
+  

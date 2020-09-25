@@ -1,24 +1,21 @@
 import React from "react";
 import FormInput from "../form-input/form-input.component";
 import CustomButton from "../custom-button/custom-button.component";
-import "./sign-in.styles.scss";
+import "./create-mod.styles.scss";
 import axios from "axios";
-import { withRouter,Link} from "react-router-dom";
-import { connect } from "react-redux";
-import { setCurrentUser,setRole } from "../../redux/user/user.action";
+import { withRouter } from "react-router-dom";
 
-class SignIn extends React.Component {
+class CreateMod extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       user: "",
       email: "",
       password: "",
+      confirmpassword: "",
       loading: false,
-      role:"user",
     };
   }
-  
   componentDidMount() {
     console.log(this.state);
   }
@@ -26,30 +23,29 @@ class SignIn extends React.Component {
   handleSubmit = (event) => {
     event.preventDefault();
     this.setState({ loading: true });
+    if (this.state.password !== this.state.confirmpassword) {
+      this.setState({ loading: false });
+      alert("passwords mismatch");
+      return;
+    }
+    console.log(this.state);
     axios
-      .post("https://express-sql-app.herokuapp.com/user/login", {
+      .post("https://express-sql-app.herokuapp.com/user/register", {
         email: this.state.email,
         password: this.state.password,
-        role: this.state.role,
+        role: "moderator",
       })
       .then((response) => {
-        if (response.data.success ===1 ) {
-
-          this.props.setCurrentUser(this.state.email);
-          this.props.setRole(this.state.role);
+        console.log(response);
+        if (response) {
           this.setState({ loading: false });
-          this.props.history.push({
-            pathname: "/user",
-          });
-        } else {
-          this.setState({ loading: false });
-          alert("Invalid Login Credentials");
+          
+          alert(response.data.message);
         }
       })
       .catch((err) => {
-        console.log(err);
         this.setState({ loading: false });
-        alert("Please try again, error occured");
+        alert("An error occured,please try again");
       });
   };
 
@@ -58,12 +54,12 @@ class SignIn extends React.Component {
     this.setState({ [name]: value });
   };
   render() {
-    const { email, password, loading } = this.state;
+    const { email, password, loading, confirmpassword } = this.state;
     const { handleChange, handleSubmit } = this;
     return (
       <div>
         <div className="sign-in">
-          <h4>Login as User</h4>
+          <h4>create Moderator account</h4>
 
           <form onSubmit={handleSubmit}>
             <FormInput
@@ -82,33 +78,27 @@ class SignIn extends React.Component {
               label="password"
               required
             />
+            <FormInput
+              name="confirmpassword"
+              type="password"
+              value={confirmpassword}
+              onChange={handleChange}
+              label="confirm password"
+              required
+            />
             <div className="buttonandloader">
-              <CustomButton type="submit"> Sign in </CustomButton>
+              <CustomButton type="submit"> Create Moderator </CustomButton>
               {loading ? (
-                <div className="container">
-                  <div className="loader"></div>
+                <div class="container">
+                  <div class="loader"></div>
                 </div>
               ) : null}
             </div>
           </form>
-          
-        </div>
-        <div className="belowlinks">
-        <Link className="option" to="/moderatorlogin">
-            Moderator Login
-          </Link>
-          <Link className="option" to="/adminlogin">
-           Admin Login
-          </Link>
         </div>
       </div>
     );
   }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-  setCurrentUser: (user) => dispatch(setCurrentUser(user)),
-  setRole: (role)=> dispatch(setRole(role))
-});
-
-export default connect(null, mapDispatchToProps)(withRouter(SignIn));
+export default withRouter(CreateMod);
