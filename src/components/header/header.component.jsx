@@ -26,12 +26,10 @@ class Header extends React.Component {
     }
 
     return this.props.role ? (
-      this.props.role === "moderator" ? 
-      
-      (
+      this.props.role === "moderator" ? (
         <div className="header">
           <div className="options">
-          <Link className="option" to="/user">
+            <Link className="option" to="/user">
               Home
             </Link>
             <Link className="option" to="/addproduct">
@@ -52,12 +50,10 @@ class Header extends React.Component {
             </Link>
           </div>
         </div>
-      ) 
-      
-      : this.props.role === "superadmin" ? (
+      ) : this.props.role === "superadmin" ? (
         <div className="header">
           <div className="options">
-          <Link className="option" to="/user">
+            <Link className="option" to="/user">
               Home
             </Link>
             <Link className="option" to="/addproduct">
@@ -81,11 +77,29 @@ class Header extends React.Component {
             </Link>
           </div>
         </div>
-      ) 
-      : null
-    ) 
-    
-    : (
+      ) : this.props.role === "user" ? (
+        <div className="header">
+          <div className="options">
+          <Link className="option" to="/user">
+              Home
+            </Link>
+            <Link
+              onClick={() => {
+                this.props.setCurrentUser(null);
+                this.props.setRole(null);
+                this.props.history.push({
+                  pathname: "/",
+                });
+              }}
+              className="option"
+              to="/"
+            >
+              Signout
+            </Link>
+          </div>
+        </div>
+      ) : null
+    ) : (
       <div className="header">
         <div className="options">
           <Link className="option" to="/">
