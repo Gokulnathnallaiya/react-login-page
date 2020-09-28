@@ -80,7 +80,7 @@ class Header extends React.Component {
       ) : this.props.role === "user" ? (
         <div className="header">
           <div className="options">
-          <Link className="option" to="/user">
+            <Link className="option" to="/user">
               Home
             </Link>
             <Link

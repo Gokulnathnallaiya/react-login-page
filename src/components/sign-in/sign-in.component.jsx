@@ -93,14 +93,14 @@ class SignIn extends React.Component {
           </form>
           
         </div>
-        <div className="belowlinks">
+        {/* <div className="belowlinks">
         <Link className="option" to="/moderatorlogin">
             Moderator Login
           </Link>
           <Link className="option" to="/adminlogin">
            Admin Login
           </Link>
-        </div>
+        </div> */}
       </div>
     );
   }

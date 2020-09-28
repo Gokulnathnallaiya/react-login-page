@@ -14,13 +14,14 @@ import LandingPage from './pages/landing-page.component';
 import AddProductPage from './components/add-product/add-product.component';
 import EditProductPage from './components/edit-product/edit-product.component';
 import CreateModerator from "./components/create-moderator/create-mod.component";
-
+import Header2 from "./components/header/index"
 
 function App() {
   return (
     
     <div className="app">
-      <Header/>
+      <Header2/>
+      
       <Switch>
         <Route  path='/signup' component={SignUpPage}/>
         <Route exact path='/' component={SignInPage} />
