@@ -2,8 +2,15 @@ import React from "react";
 import FormInput from "../form-input/form-input.component";
 import CustomButton from "../custom-button/custom-button.component";
 import "./create-mod.styles.scss";
+//axios
 import axios from "axios";
+
+//router
 import { withRouter } from "react-router-dom";
+
+
+///............component not needed for normal user.............
+
 
 class CreateMod extends React.Component {
   constructor(props) {

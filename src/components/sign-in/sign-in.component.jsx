@@ -1,11 +1,17 @@
 import React from "react";
+import "./sign-in.styles.scss";
+
+//custom components
 import FormInput from "../form-input/form-input.component";
 import CustomButton from "../custom-button/custom-button.component";
-import "./sign-in.styles.scss";
+
+//axios
 import axios from "axios";
-import { withRouter,Link} from "react-router-dom";
+//router
+import { withRouter } from "react-router-dom";
+//redux
 import { connect } from "react-redux";
-import { setCurrentUser,setRole } from "../../redux/user/user.action";
+import { setCurrentUser, setRole } from "../../redux/user/user.action";
 
 class SignIn extends React.Component {
   constructor(props) {
@@ -15,10 +21,10 @@ class SignIn extends React.Component {
       email: "",
       password: "",
       loading: false,
-      role:"user",
+      role: "user",
     };
   }
-  
+
   componentDidMount() {
     console.log(this.state);
   }
@@ -33,12 +39,12 @@ class SignIn extends React.Component {
         role: this.state.role,
       })
       .then((response) => {
-        if (response.data.success ===1 ) {
-
-          this.props.setCurrentUser(this.state.email);
-          this.props.setRole(this.state.role);
+        const {setCurrentUser,setRole,history} =this.props
+        if (response.data.success === 1) {
+          setCurrentUser(this.state.email);
+          setRole(this.state.role);
           this.setState({ loading: false });
-          this.props.history.push({
+          history.push({
             pathname: "/user",
           });
         } else {
@@ -91,16 +97,7 @@ class SignIn extends React.Component {
               ) : null}
             </div>
           </form>
-          
         </div>
-        {/* <div className="belowlinks">
-        <Link className="option" to="/moderatorlogin">
-            Moderator Login
-          </Link>
-          <Link className="option" to="/adminlogin">
-           Admin Login
-          </Link>
-        </div> */}
       </div>
     );
   }
@@ -108,7 +105,7 @@ class SignIn extends React.Component {
 
 const mapDispatchToProps = (dispatch) => ({
   setCurrentUser: (user) => dispatch(setCurrentUser(user)),
-  setRole: (role)=> dispatch(setRole(role))
+  setRole: (role) => dispatch(setRole(role)),
 });
 
 export default connect(null, mapDispatchToProps)(withRouter(SignIn));

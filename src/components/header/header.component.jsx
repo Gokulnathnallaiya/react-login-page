@@ -1,118 +1,88 @@
-import React from "react";
+import React, { useState } from "react";
+import * as FaIcons from "react-icons/fa";
+import * as AiIcons from "react-icons/ai";
 import { Link } from "react-router-dom";
+import { SidebarData, notLoggedInData } from "./sidebarData";
+import "./styles.css";
+
+//react- icons
+import { IconContext } from "react-icons";
+
+//redux
 import { connect } from "react-redux";
 import { setCurrentUser, setRole } from "../../redux/user/user.action";
 import { withRouter } from "react-router-dom";
 
-import "./header.styles.scss";
 
-class Header extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      user: "",
-      email: "",
-      password: "",
-      confirmpassword: "",
-      loading: false,
-    };
-  }
 
-  render() {
-    const currentUser = this.props;
+function Navbar({ currentUser, setCurrentUser, setRole, history }) {
+  const [sidebar, setSidebar] = useState(false);
 
-    if (!currentUser) {
-      return <div>login</div>;
-    }
+  const showSidebar = () => setSidebar(!sidebar);
 
-    return this.props.role ? (
-      this.props.role === "moderator" ? (
-        <div className="header">
-          <div className="options">
-            <Link className="option" to="/user">
-              Home
-            </Link>
-            <Link className="option" to="/addproduct">
-              Add new Product
-            </Link>
-            <Link
-              onClick={() => {
-                this.props.setCurrentUser(null);
-                this.props.setRole(null);
-                this.props.history.push({
-                  pathname: "/",
-                });
-              }}
-              className="option"
-              to="/"
-            >
-              Signout
-            </Link>
-          </div>
-        </div>
-      ) : this.props.role === "superadmin" ? (
-        <div className="header">
-          <div className="options">
-            <Link className="option" to="/user">
-              Home
-            </Link>
-            <Link className="option" to="/addproduct">
-              Add new Product
-            </Link>
-            <Link className="option" to="/create/moderator">
-              New Moderator
-            </Link>
-            <Link
-              onClick={() => {
-                this.props.setCurrentUser(null);
-                this.props.setRole(null);
-                this.props.history.push({
-                  pathname: "/",
-                });
-              }}
-              className="option"
-              to="/"
-            >
-              Signout
-            </Link>
-          </div>
-        </div>
-      ) : this.props.role === "user" ? (
-        <div className="header">
-          <div className="options">
-            <Link className="option" to="/user">
-              Home
-            </Link>
-            <Link
-              onClick={() => {
-                this.props.setCurrentUser(null);
-                this.props.setRole(null);
-                this.props.history.push({
-                  pathname: "/",
-                });
-              }}
-              className="option"
-              to="/"
-            >
-              Signout
-            </Link>
-          </div>
-        </div>
-      ) : null
-    ) : (
-      <div className="header">
-        <div className="options">
-          <Link className="option" to="/">
-            Login
+  const Navbardata = currentUser ? SidebarData : notLoggedInData;
+
+  return (
+    <>
+      <IconContext.Provider value={{ color: "#fff" }}>
+        <div className="navbar">
+          <Link to="#" className="menu-bars">
+            <FaIcons.FaBars onClick={showSidebar} />
           </Link>
-          <Link className="option" to="/signup">
-            Register
+          <Link to="#" className="menu-bars">
+            <FaIcons.FaShopify />
           </Link>
         </div>
-      </div>
-    );
-  }
+        <nav className={sidebar ? "nav-menu active" : "nav-menu"}>
+          <ul className="nav-menu-items" onClick={showSidebar}>
+
+            
+            <li className="navbar-toggle">
+              <Link to="#" className="menu-bars">
+                <AiIcons.AiOutlineClose />
+              </Link>
+            </li>
+
+
+            {Navbardata.map((item, index) => {
+              return (
+                <li key={index} className={item.cName}>
+                  <Link to={item.path}>
+                    {item.icon}
+                    <span>{item.title}</span>
+                  </Link>
+                </li>
+              );
+            })}
+
+
+
+
+
+            <li className="nav-text">
+              {currentUser ? (
+                <Link
+                  onClick={() => {
+                    setCurrentUser(null);
+                    setRole(null);
+                    history.push({
+                      pathname: "/",
+                    });
+                  }}
+                  to="/"
+                >
+                  <AiIcons.AiOutlineLogout />
+                  <span>Signout</span>
+                </Link>
+              ) : null}
+            </li>
+          </ul>
+        </nav>
+      </IconContext.Provider>
+    </>
+  );
 }
+
 
 const mapStateToProps = (state) => ({
   currentUser: state.user.currentUser,
@@ -123,4 +93,4 @@ const mapDispatchToProps = (dispatch) => ({
   setRole: (role) => dispatch(setRole(role)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Header));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Navbar));

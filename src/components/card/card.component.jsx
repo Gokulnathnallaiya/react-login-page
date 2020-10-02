@@ -1,8 +1,13 @@
 import React from 'react';
 import "./card.styles.css";
+
+//router
+import { withRouter } from "react-router-dom";
+
+//redux
 import { connect } from "react-redux";
 import { setCurrentUser,setRole } from "../../redux/user/user.action";
-import { withRouter } from "react-router-dom";
+
 
 const Card = ({price,stock,name,handlechange,role})=>(
     <div className="card-container">
@@ -10,8 +15,7 @@ const Card = ({price,stock,name,handlechange,role})=>(
         <h3 className="productname">{name}</h3>
         <h3>Price: {price}</h3>
         <h3>Available:{stock}</h3>
-        {role==="moderator"|| role==="superadmin"?
-        <button onClick={handlechange}className="custom-button">Edit</button>:null}
+        <button onClick={handlechange}className="custom-button">Edit</button>
 
     </div>
 )

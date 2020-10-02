@@ -1,8 +1,13 @@
 import React from "react";
+//custom components
 import FormInput from "../form-input/form-input.component";
 import CustomButton from "../custom-button/custom-button.component";
+
+//axios
 import axios from "axios";
+//redux
 import { connect } from "react-redux";
+//router
 import { withRouter } from "react-router-dom";
 
 import "./edit-product.styles.scss";

@@ -1,7 +1,7 @@
 import React from "react";
 import "./landing-page.styles.css";
 import { connect } from "react-redux";
-import Card from "../components/card/card.component";
+import Card from "../../components/card/card.component";
 import axios from "axios";
 import { withRouter } from "react-router-dom";
 
