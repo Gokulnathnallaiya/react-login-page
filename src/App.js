@@ -23,16 +23,17 @@ class App extends  React.Component {
   }
 
   render(){
+    const {currentUser}=this.props;
   return (
     
     <div className="app">
       <Header/>
       <Switch>
         <Route  path='/signup' component={SignUpPage}/>
-        <Route exact path='/' render={()=>this.props.currentUser?(<Redirect to="/user"/>):(<SignInPage/>)} />
-        <Route path='/user' render={()=>!this.props.currentUser?(<Redirect to="/"/>):(<LandingPage/>)} />
-        <Route path='/addproduct' render={()=>!this.props.currentUser?(<Redirect to="/"/>):(<AddProductPage/>)} />
-        <Route path='/editproduct' render={()=>!this.props.currentUser?(<Redirect to="/"/>):(<EditProductPage/>)} />
+        <Route exact path='/' render={()=>currentUser?(<Redirect to="/user"/>):(<SignInPage/>)} />
+        <Route path='/user' render={()=>!currentUser?(<Redirect to="/"/>):(<LandingPage/>)} />
+        <Route path='/addproduct' render={()=>!currentUser?(<Redirect to="/"/>):(<AddProductPage/>)} />
+        <Route path='/editproduct' render={()=>!currentUser?(<Redirect to="/"/>):(<EditProductPage/>)} />
       </Switch>
       
     </div>
